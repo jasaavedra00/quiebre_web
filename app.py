@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
-from openai import OpenAI
+import openai
 import os
 import json
 import logging
@@ -12,8 +12,8 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Configurar OpenAI con el nuevo cliente
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Configurar OpenAI
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Configurar logging
 logging.basicConfig(level=logging.DEBUG)
@@ -96,8 +96,8 @@ def generar():
         else:
             return jsonify({'error': 'Área no válida'})
 
-        # Generar respuesta con OpenAI (nueva versión)
-        response = client.chat.completions.create(
+        # Generar respuesta con OpenAI
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": """Eres un experto en creatividad disruptiva.
@@ -110,7 +110,7 @@ def generar():
             temperature=0.9
         )
 
-        respuesta = response.choices[0].message.content
+        respuesta = response.choices[0].message['content']
         return jsonify({area: respuesta})
 
     except Exception as e:
