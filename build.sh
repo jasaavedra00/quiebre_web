@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-pip install --upgrade pip
+# Primero desinstalamos cualquier versión existente
 pip uninstall openai -y
-pip install openai==0.28
+
+# Luego instalamos la versión específica que necesitamos
+pip install openai==0.28.0
+
+# Finalmente instalamos el resto de dependencias
 pip install -r requirements.txt
+
+# Verificamos la versión instalada
+pip freeze | grep openai
