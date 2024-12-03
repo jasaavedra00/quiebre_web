@@ -77,64 +77,24 @@ def upload_knowledge():
 
     return render_template('upload.html')
 
-def crear_prompt_ideas(data, ideas_previas=None):
-    prompt = f"""
-    SOLICITUD ACTUAL: {data.get('solicitud', '')}
-    IDEAS A EVITAR ABSOLUTAMENTE: {data.get('no-queremos', '')}
-    
-    REGLAS ESTRICTAS PARA GENERACIÓN DE IDEAS:
-    1. Cada idea DEBE ser radicalmente diferente a las ideas listadas para evitar
-    2. Cada idea DEBE ser única y no relacionada con las otras ideas propuestas
-    3. Cada idea DEBE explicar por qué es disruptiva
-    4. Cada idea DEBE incluir elementos innovadores específicos
-    5. NO repetir conceptos ni aproximaciones similares
-    
-    ESTRUCTURA DE RESPUESTA PARA CADA IDEA:
-    
-    IDEA [número]:
-    - Concepto Principal: [descripción breve y clara]
-    - Por qué es disruptiva: [explicación detallada]
-    - Elementos innovadores: [lista específica]
-    - Implementación: [detalles prácticos]
-    - Diferenciadores clave: [qué la hace única]
-    """
-    
-    if ideas_previas:
-        prompt += f"""
-        IDEAS PREVIAS (EVITAR SIMILITUDES):
-        {json.dumps(ideas_previas, indent=2)}
-        
-        IMPORTANTE:
-        - Las nuevas ideas deben ser COMPLETAMENTE DIFERENTES a las anteriores
-        - NO repetir conceptos ni enfoques similares
-        - Cada nueva idea debe tener un ángulo radicalmente distinto
-        """
-    
-    return prompt
-
 @app.route('/generar', methods=['POST'])
 def generar():
     try:
         data = request.json
         area = data.get('area_solicitada')
         logger.debug(f"Generando ideas para área: {area}")
-        
-        # Obtener ideas previas si existen
-        ideas_previas = data.get('ideas_previas', [])
-        
+
         # Crear prompt según el área
-        if area == 'ideas':
-            prompt = crear_prompt_ideas(data['ideas'], ideas_previas)
+        if area == 'btl':
+            prompt = crear_prompt_btl(data['btl'])
+        elif area == 'trade':
+            prompt = crear_prompt_trade(data['trade'])
+        elif area == 'digital':
+            prompt = crear_prompt_digital(data['digital'])
+        elif area == 'ideas':
+            prompt = crear_prompt_ideas(data['ideas'])
         else:
-            # Mantener la lógica existente para otras áreas
-            if area == 'btl':
-                prompt = crear_prompt_btl(data['btl'])
-            elif area == 'trade':
-                prompt = crear_prompt_trade(data['trade'])
-            elif area == 'digital':
-                prompt = crear_prompt_digital(data['digital'])
-            else:
-                return jsonify({'error': 'Área no válida'})
+            return jsonify({'error': 'Área no válida'})
 
         # Generar respuesta con OpenAI
         response = openai.ChatCompletion.create(
@@ -159,63 +119,120 @@ def generar():
 
 def crear_prompt_btl(data):
     return f"""
-    Por favor, genera 5 ideas creativas y disruptivas de BTL basadas en:
+    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+
+    1. CONCEPTOS CLAVE:
+    Contexto actual: {data.get('conceptos', '')}
+    Generar 3 conceptos disruptivos:
+    CONCEPTO 1:
+    - Descripción:
+    - Por qué es disruptivo:
+    - Elementos innovadores:
     
-    SOLICITUD: {data.get('solicitud', '')}
-    CONCEPTOS CLAVE: {data.get('conceptos', '')}
-    LOCACIONES POSIBLES: {data.get('locaciones', '')}
-    ANTES Y DESPUÉS: {data.get('antes-despues', '')}
-    MOMENTO PEAK: {data.get('momento-peak', '')}
-    ACTIVACIONES: {data.get('activaciones', '')}
-    PUESTA EN ESCENA: {data.get('puesta-escena', '')}
-    FORMA DE INVITAR: {data.get('forma-invitar', '')}
+    CONCEPTO 2:
+    [mismo formato]
     
-    ESTRUCTURA DE RESPUESTA PARA CADA IDEA:
+    CONCEPTO 3:
+    [mismo formato]
+
+    2. LOCACIONES:
+    Opciones actuales: {data.get('locaciones', '')}
+    Proponer 3 locaciones disruptivas:
+    LOCACIÓN 1:
+    - Descripción del espacio:
+    - Por qué es disruptiva:
+    - Ventajas únicas:
     
-    IDEA [número]:
-    - Concepto Principal: [descripción breve]
-    - Por qué es disruptiva: [explicación]
-    - Elementos innovadores: [lista]
-    - Implementación: [detalles]
-    - Diferenciadores clave: [qué la hace única]
+    [Continuar con mismo formato para locaciones 2 y 3]
+
+    3. ACTIVACIONES:
+    Contexto actual: {data.get('activaciones', '')}
+    Proponer 3 activaciones disruptivas:
+    ACTIVACIÓN 1:
+    - Descripción:
+    - Elementos innovadores:
+    - Interacción con el público:
+    
+    [Continuar con mismo formato para activaciones 2 y 3]
     """
 
 def crear_prompt_trade(data):
     return f"""
-    Por favor, genera 5 ideas creativas y disruptivas de TRADE basadas en:
+    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+
+    1. MATERIAL POP:
+    Contexto actual: {data.get('material-pop', '')}
+    Generar 3 propuestas disruptivas:
+    PROPUESTA 1:
+    - Descripción:
+    - Por qué es disruptiva:
+    - Elementos innovadores:
     
-    SOLICITUD: {data.get('solicitud', '')}
-    MATERIAL POP: {data.get('material-pop', '')}
-    IDEAS DE DINÁMICAS: {data.get('dinamicas', '')}
-    MATERIALIDAD: {data.get('materialidad', '')}
+    [Continuar con mismo formato para propuestas 2 y 3]
+
+    2. DINÁMICAS:
+    Contexto actual: {data.get('dinamicas', '')}
+    Proponer 3 dinámicas disruptivas:
+    DINÁMICA 1:
+    - Descripción:
+    - Mecánica:
+    - Factor diferenciador:
     
-    ESTRUCTURA DE RESPUESTA PARA CADA IDEA:
+    [Continuar con mismo formato para dinámicas 2 y 3]
+
+    3. MATERIALIDAD:
+    Contexto actual: {data.get('materialidad', '')}
+    Proponer 3 opciones innovadoras:
+    OPCIÓN 1:
+    - Material propuesto:
+    - Ventajas únicas:
+    - Aplicaciones posibles:
     
-    IDEA [número]:
-    - Concepto Principal: [descripción breve]
-    - Por qué es disruptiva: [explicación]
-    - Elementos innovadores: [lista]
-    - Implementación: [detalles]
-    - Diferenciadores clave: [qué la hace única]
+    [Continuar con mismo formato para opciones 2 y 3]
     """
 
 def crear_prompt_digital(data):
     return f"""
-    Por favor, genera 5 ideas creativas y disruptivas de DIGITAL basadas en:
+    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+
+    1. CONTENIDO:
+    Contexto actual: {data.get('contenido', '')}
+    Generar 3 propuestas de contenido:
+    CONTENIDO 1:
+    - Descripción:
+    - Formato:
+    - Factor viral:
     
-    SOLICITUD: {data.get('solicitud', '')}
-    IDEAS DE CONTENIDO: {data.get('contenido', '')}
-    CONCEPTOS: {data.get('conceptos', '')}
+    [Continuar con mismo formato para contenidos 2 y 3]
+
+    2. CONCEPTOS:
+    Contexto actual: {data.get('conceptos', '')}
+    Proponer 3 conceptos disruptivos:
+    CONCEPTO 1:
+    - Descripción:
+    - Elementos innovadores:
+    - Viralización esperada:
     
-    ESTRUCTURA DE RESPUESTA PARA CADA IDEA:
+    [Continuar con mismo formato para conceptos 2 y 3]
+    """
+
+def crear_prompt_ideas(data):
+    return f"""
+    SOLICITUD ACTUAL: {data.get('solicitud', '')}
+    IDEAS A EVITAR: {data.get('no-queremos', '')}
     
-    IDEA [número]:
-    - Concepto Principal: [descripción breve]
-    - Por qué es disruptiva: [explicación]
-    - Elementos innovadores: [lista]
-    - Implementación: [detalles]
-    - Diferenciadores clave: [qué la hace única]
+    Por favor, genera 3 ideas COMPLETAMENTE DISRUPTIVAS:
+
+    IDEA 1:
+    - Concepto Principal:
+    - Por qué es disruptiva:
+    - Elementos innovadores:
+    - Implementación:
+    - Diferenciadores clave:
+    
+    [Continuar con mismo formato para ideas 2 y 3]
     """
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)
