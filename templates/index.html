@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIEBRE - Ideas Disruptivas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            background: #1a1a1a;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 4em;
+            letter-spacing: 5px;
+        }
+
+        .areas {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .area-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            background: #2c3e50;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .area-btn:hover {
+            transform: translateY(-3px);
+            background: #34495e;
+        }
+
+        .submenu {
+            display: none;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        .input-field {
+            margin-bottom: 15px;
+        }
+
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #2d2d2d;
+            color: white;
+            font-size: 1em;
+        }
+
+        #crear-quiebre, #generar-nuevas {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        #crear-quiebre:hover {
+            background: #c0392b;
+        }
+
+        #generar-nuevas {
+            background: #27ae60;
+            display: none;
+        }
+
+        #generar-nuevas:hover {
+            background: #219a52;
+        }
+
+        #resultados {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .error {
+            color: #ff6b6b;
+            padding: 15px;
+            background: #2d2d2d;
+            border-left: 4px solid #ff6b6b;
+            margin: 10px 0;
+        }
+
+        .resultado-area {
+            margin: 20px 0;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .resultado-area h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .contenido-resultado {
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>QUIEBRE</h1>
+        </header>
+
+        <div class="areas">
+            <button class="area-btn" onclick="mostrarSubmenu('btl')">BTL</button>
+            <button class="area-btn" onclick="mostrarSubmenu('trade')">TRADE</button>
+            <button class="area-btn" onclick="mostrarSubmenu('digital')">DIGITAL</button>
+            <button class="area-btn" onclick="mostrarSubmenu('ideas')">IDEAS</button>
+        </div>
+
+        <div id="btl-submenu" class="submenu">
+            <h2>BTL</h2>
+            <div class="input-field">
+                <label>Solicitud</label>
+                <input type="text" name="btl-solicitud" placeholder="Describe tu solicitud para BTL">
+            </div>
+            <div class="input-field">
+                <label>Conceptos</label>
+                <input type="text" name="btl-conceptos">
+            </div>
+            <div class="input-field">
+                <label>Locaciones</label>
+                <input type="text" name="btl-locaciones">
+            </div>
+            <div class="input-field">
+                <label>Antes y después</label>
+                <input type="text" name="btl-antes-despues">
+            </div>
+            <div class="input-field">
+                <label>Momento Peak</label>
+                <input type="text" name="btl-momento-peak">
+            </div>
+            <div class="input-field">
+                <label>Activaciones</label>
+                <input type="text" name="btl-activaciones">
+            </div>
+            <div class="input-field">
+                <label>Puesta en escena</label>
+                <input type="text" name="btl-puesta-escena">
+            </div>
+            <div class="input-field">
+                <label>Forma de invitar</label>
+                <input type="text" name="btl-forma-invitar">
+            </div>
+        </div>
+
+        <div id="trade-submenu" class="submenu">
+            <h2>TRADE</h2>
+            <div class="input-field">
+                <label>Solicitud</label>
+                <input type="text" name="trade-solicitud" placeholder="Describe tu solicitud para Trade">
+            </div>
+            <div class="input-field">
+                <label>Material POP</label>
+                <input type="text" name="trade-material-pop">
+            </div>
+            <div class="input-field">
+                <label>Ideas de dinámicas</label>
+                <input type="text" name="trade-dinamicas">
+            </div>
+            <div class="input-field">
+                <label>Materialidad</label>
+                <input type="text" name="trade-materialidad">
+            </div>
+        </div>
+
+        <div id="digital-submenu" class="submenu">
+            <h2>DIGITAL</h2>
+            <div class="input-field">
+                <label>Solicitud</label>
+                <input type="text" name="digital-solicitud" placeholder="Describe tu solicitud para Digital">
+            </div>
+            <div class="input-field">
+                <label>Ideas de contenido</label>
+                <input type="text" name="digital-contenido">
+            </div>
+            <div class="input-field">
+                <label>Conceptos</label>
+                <input type="text" name="digital-conceptos">
+            </div>
+        </div>
+
+        <div id="ideas-submenu" class="submenu">
+            <h2>IDEAS</h2>
+            <div class="input-field">
+                <label>Solicitud</label>
+                <input type="text" name="ideas-solicitud" placeholder="Describe tu solicitud para Ideas">
+            </div>
+            <div class="input-field">
+                <label>Ideas que no queremos</label>
+                <input type="text" name="ideas-no-queremos" placeholder="Describe las ideas que quieres evitar">
+            </div>
+        </div>
+
+        <button id="crear-quiebre" onclick="generarQuiebre()">Crear Quiebre</button>
+        <button id="generar-nuevas" onclick="generarNuevasIdeas()">Generar Nuevas Ideas</button>
+        <div id="resultados"></div>
+    </div>
+
+    <script>
+        let areaActual = '';
+
+        function mostrarSubmenu(area) {
+            areaActual = area;
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                submenu.classList.remove('active');
+            });
+            document.getElementById(`${area}-submenu`).classList.add('active');
+        }
+
+        async function generarQuiebre() {
+            if (!areaActual) {
+                alert('Por favor selecciona un área primero');
+                return;
+            }
+
+            const datos = {
+                area_solicitada: areaActual,
+                [areaActual]: recopilarDatosArea(areaActual)
+            };
+
+            await generarIdeas(datos);
+            document.getElementById('generar-nuevas').style.display = 'block';
+        }
+
+        async function generarNuevasIdeas() {
+            const datos = {
+                area_solicitada: areaActual,
+                [areaActual]: recopilarDatosArea(areaActual)
+            };
+
+            await generarIdeas(datos);
+        }
+
+        function recopilarDatosArea(area) {
+            const datos = {
+                solicitud: document.querySelector(`[name="${area}-solicitud"]`).value
+            };
+
+            document.querySelectorAll(`[name^="${area}-"]`).forEach(input => {
+                const campo = input.name.replace(`${area}-`, '');
+                if (campo !== 'solicitud') {
+                    datos[campo] = input.value;
+                }
+            });
+
+            return datos;
+        }
+
+        async function generarIdeas(datos) {
+            const resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = 'Generando ideas...';
+
+            try {
+                const response = await fetch('/generar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                const resultados = await response.json();
+                
+                if (resultados.error) {
+                    resultadosDiv.innerHTML = `<div class="error">Error: ${resultados.error}</div>`;
+                } else if (resultados[areaActual]) {
+                    resultadosDiv.innerHTML = `
+                        <div class="resultado-area">
+                            <h3>${areaActual.toUpperCase()}</h3>
+                            <div class="contenido-resultado">
+                                ${resultados[areaActual]}
+                            </div>
+                        </div>`;
+                } else {
+                    resultadosDiv.innerHTML = 'No se generaron resultados';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultadosDiv.innerHTML = `<div class="error">Error al generar ideas: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
