@@ -44,7 +44,6 @@ def upload_knowledge():
             area = request.form.get('area')
             logger.debug(f"Procesando upload para área: {area}")
             
-            # Crear estructura de datos
             brief_data = {
                 "descripcion_general": request.form.get('descripcion', '').strip(),
                 "objetivos_comunes": [obj.strip() for obj in request.form.get('objetivos', '').split('\n') if obj.strip()],
@@ -57,7 +56,6 @@ def upload_knowledge():
                 "casos_exitosos": []
             }
 
-            # Procesar casos de éxito
             casos_texto = request.form.get('casos', '')
             casos_list = [caso.strip() for caso in casos_texto.split('\n\n') if caso.strip()]
             
@@ -70,7 +68,6 @@ def upload_knowledge():
                 }
                 brief_data["casos_exitosos"].append(caso_dict)
 
-            # Guardar en archivos JSON
             brief_file = BRIEF_DIR / f'{area}.json'
             with open(brief_file, 'w', encoding='utf-8') as f:
                 json.dump(brief_data, f, ensure_ascii=False, indent=2)
@@ -91,7 +88,6 @@ def generar():
         area = data.get('area_solicitada')
         logger.debug(f"Generando ideas para área: {area}")
 
-        # Crear prompt según el área
         if area == 'btl':
             prompt = crear_prompt_btl(data['btl'])
         elif area == 'trade':
@@ -106,14 +102,21 @@ def generar():
         logger.debug(f"Prompt generado: {prompt}")
 
         try:
-            # Generar respuesta con OpenAI
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": """Eres un experto en creatividad disruptiva.
-                    Tu objetivo es generar ideas radicalmente diferentes y revolucionarias.
-                    NUNCA repitas conceptos ni uses aproximaciones similares.
-                    Cada idea debe ser completamente única y alejada de lo convencional."""},
+                    {"role": "system", "content": """Eres un experto en creatividad disruptiva con amplia experiencia en marketing y publicidad.
+                    Tu objetivo es generar ideas que sean:
+                    1. DISRUPTIVAS Y REVOLUCIONARIAS
+                    2. ESPECÍFICAMENTE ADAPTADAS al contexto y solicitud del cliente
+                    3. RELEVANTES para el target y objetivos planteados
+                    4. FACTIBLES de implementar dentro de las restricciones dadas
+                    
+                    IMPORTANTE:
+                    - Analiza primero el contexto/solicitud
+                    - Asegúrate que cada idea responda directamente a los objetivos
+                    - Las ideas deben ser únicas pero relevantes para la marca/producto
+                    - Considera restricciones y limitaciones mencionadas"""},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=2000,
@@ -134,176 +137,174 @@ def generar():
 
 def crear_prompt_btl(data):
     return f"""
-    Genera ideas COMPLETAMENTE DISRUPTIVAS y REVOLUCIONARIAS para cada uno de estos elementos BTL.
-    IMPORTANTE: Cada idea debe ser RADICALMENTE DIFERENTE a lo convencional.
+    CONTEXTO DE LA SOLICITUD:
+    - Marca/Cliente: {data.get('marca', 'No especificado')}
+    - Objetivo: {data.get('objetivo', 'No especificado')}
+    - Target: {data.get('target', 'No especificado')}
+    - Restricciones/Consideraciones: {data.get('restricciones', 'No especificado')}
+    - Presupuesto: {data.get('presupuesto', 'No especificado')}
+    
+    Basado en este contexto específico, genera ideas DISRUPTIVAS para cada elemento:
 
     1. CONCEPTOS CREATIVOS:
     Contexto actual: {data.get('concepto', '')}
-    Proponer 3 conceptos totalmente disruptivos:
+    Proponer 3 conceptos que revolucionen la categoría Y se alineen con el objetivo:
     CONCEPTO 1:
     - Idea central:
-    - Por qué rompe paradigmas:
-    - Elementos innovadores:
+    - Alineación con objetivo:
+    - Elementos disruptivos:
+    - Relevancia para el target:
     [Repetir formato para conceptos 2 y 3]
 
     2. LOCACIONES ÚNICAS:
     Contexto actual: {data.get('locaciones', '')}
-    Proponer 3 espacios no convencionales:
+    Proponer 3 espacios que sorprendan al target específico:
     LOCACIÓN 1:
     - Espacio propuesto:
-    - Por qué es disruptivo:
-    - Ventajas diferenciales:
+    - Por qué funciona para este target:
+    - Elementos disruptivos:
+    - Alineación con marca:
     [Repetir formato para locaciones 2 y 3]
 
-    3. ANTES Y DESPUÉS:
-    Proponer 3 formas innovadoras de transformación:
-    TRANSFORMACIÓN 1:
-    - Descripción del cambio:
-    - Impacto visual:
-    - Factor sorpresa:
-    [Repetir formato para transformaciones 2 y 3]
-
-    4. MOMENTO PEAK:
-    Proponer 3 momentos cumbre únicos:
-    MOMENTO 1:
-    - Descripción del momento:
-    - Factor wow:
-    - Elementos memorables:
-    [Repetir formato para momentos 2 y 3]
-
-    5. ACTIVACIONES:
+    3. ACTIVACIONES:
     Contexto actual: {data.get('activaciones', '')}
-    Proponer 3 activaciones revolucionarias:
+    Proponer 3 activaciones que cumplan el objetivo:
     ACTIVACIÓN 1:
     - Mecánica:
-    - Interacción innovadora:
-    - Elemento viral:
+    - Relevancia para objetivo:
+    - Elemento disruptivo:
+    - Conexión con target:
     [Repetir formato para activaciones 2 y 3]
 
-    6. PUESTA EN ESCENA:
-    Proponer 3 montajes disruptivos:
+    4. PUESTA EN ESCENA:
+    Proponer 3 montajes alineados con la marca:
     MONTAJE 1:
-    - Descripción escénica:
-    - Elementos únicos:
-    - Impacto sensorial:
+    - Descripción:
+    - Alineación con marca:
+    - Elemento sorpresa:
+    - Impacto esperado:
     [Repetir formato para montajes 2 y 3]
 
-    7. PANTALLAS Y TECNOLOGÍA:
-    Proponer 3 usos no convencionales:
+    5. TECNOLOGÍA Y EXPERIENCIA:
+    Proponer 3 usos innovadores considerando el target:
     PROPUESTA 1:
-    - Tecnología propuesta:
-    - Aplicación innovadora:
-    - Diferenciador clave:
+    - Tecnología:
+    - Relevancia para target:
+    - Factor innovador:
+    - Medición de resultados:
     [Repetir formato para propuestas 2 y 3]
-
-    8. FORMA DE INVITAR:
-    Proponer 3 métodos disruptivos de convocatoria:
-    MÉTODO 1:
-    - Descripción:
-    - Factor sorpresa:
-    - Elemento memorable:
-    [Repetir formato para métodos 2 y 3]
     """
 
 def crear_prompt_trade(data):
     return f"""
-    Genera ideas COMPLETAMENTE DISRUPTIVAS para cada elemento de Trade Marketing.
-    IMPORTANTE: Cada propuesta debe ROMPER con lo tradicional del retail.
+    CONTEXTO DE LA SOLICITUD:
+    - Marca/Cliente: {data.get('marca', 'No especificado')}
+    - Objetivo comercial: {data.get('objetivo', 'No especificado')}
+    - Canal: {data.get('canal', 'No especificado')}
+    - Restricciones: {data.get('restricciones', 'No especificado')}
+    - KPIs esperados: {data.get('kpis', 'No especificado')}
+
+    Basado en este contexto específico, genera ideas DISRUPTIVAS para:
 
     1. EXHIBICIÓN:
     Contexto actual: {data.get('exhibicion', '')}
-    Proponer 3 formas revolucionarias de exhibir:
+    Proponer 3 formas revolucionarias que impulsen ventas:
     EXHIBICIÓN 1:
-    - Concepto disruptivo:
-    - Elementos innovadores:
-    - Impacto en el shopper:
+    - Concepto:
+    - Alineación con objetivo comercial:
+    - Elemento disruptivo:
+    - ROI esperado:
     [Repetir formato para exhibiciones 2 y 3]
 
     2. MATERIAL POP:
     Contexto actual: {data.get('material-pop', '')}
-    Proponer 3 materiales no convencionales:
+    Proponer 3 materiales que revolucionen el punto de venta:
     MATERIAL 1:
     - Descripción:
-    - Innovación propuesta:
-    - Ventaja diferencial:
+    - Impacto en ventas:
+    - Innovación:
+    - Medición de efectividad:
     [Repetir formato para materiales 2 y 3]
 
-    3. DINÁMICAS DE COMPRA:
+    3. DINÁMICAS COMERCIALES:
     Contexto actual: {data.get('dinamicas', '')}
-    Proponer 3 mecánicas revolucionarias:
+    Proponer 3 mecánicas que aumenten conversión:
     DINÁMICA 1:
-    - Mecánica propuesta:
+    - Mecánica:
+    - Alineación con KPIs:
     - Factor innovador:
-    - Impacto en ventas:
+    - Resultados esperados:
     [Repetir formato para dinámicas 2 y 3]
-
-    4. EXPERIENCIA EN PUNTO DE VENTA:
-    Proponer 3 experiencias únicas:
-    EXPERIENCIA 1:
-    - Descripción:
-    - Elementos sensoriales:
-    - Factor memorable:
-    [Repetir formato para experiencias 2 y 3]
     """
 
 def crear_prompt_digital(data):
     return f"""
-    Genera ideas COMPLETAMENTE DISRUPTIVAS para cada elemento Digital.
-    IMPORTANTE: Cada propuesta debe REVOLUCIONAR la forma de interacción digital.
+    CONTEXTO DE LA SOLICITUD:
+    - Marca/Cliente: {data.get('marca', 'No especificado')}
+    - Objetivo digital: {data.get('objetivo', 'No especificado')}
+    - Plataformas: {data.get('plataformas', 'No especificado')}
+    - Target digital: {data.get('target', 'No especificado')}
+    - KPIs digitales: {data.get('kpis', 'No especificado')}
 
-    1. CONCEPTO DIGITAL:
-    Contexto actual: {data.get('concepto', '')}
-    Proponer 3 conceptos revolucionarios:
-    CONCEPTO 1:
-    - Idea central:
+    Basado en este contexto específico, genera ideas DISRUPTIVAS para:
+
+    1. ESTRATEGIA DIGITAL:
+    Contexto actual: {data.get('estrategia', '')}
+    Proponer 3 enfoques revolucionarios:
+    ESTRATEGIA 1:
+    - Concepto:
+    - Alineación con objetivo:
     - Innovación digital:
-    - Factor viral:
-    [Repetir formato para conceptos 2 y 3]
+    - KPIs impactados:
+    [Repetir formato para estrategias 2 y 3]
 
     2. CONTENIDO:
     Contexto actual: {data.get('contenido', '')}
-    Proponer 3 formatos disruptivos:
+    Proponer 3 formatos que revolucionen la categoría:
     CONTENIDO 1:
-    - Formato propuesto:
-    - Elemento innovador:
-    - Potencial de engagement:
-    [Repetir formato para contenidos 2 y 3]
-
-    3. MECÁNICA DE INTERACCIÓN:
-    Proponer 3 formas únicas de interacción:
-    MECÁNICA 1:
-    - Descripción:
-    - Innovación tecnológica:
-    - Factor diferencial:
-    [Repetir formato para mecánicas 2 y 3]
-
-    4. VIRALIZACIÓN:
-    Proponer 3 estrategias no convencionales:
-    ESTRATEGIA 1:
-    - Método propuesto:
+    - Formato:
+    - Relevancia para target:
     - Factor viral:
     - Medición de impacto:
-    [Repetir formato para estrategias 2 y 3]
+    [Repetir formato para contenidos 2 y 3]
+
+    3. INTERACCIÓN:
+    Proponer 3 mecánicas innovadoras:
+    MECÁNICA 1:
+    - Descripción:
+    - Alineación con objetivo:
+    - Elemento disruptivo:
+    - Engagement esperado:
+    [Repetir formato para mecánicas 2 y 3]
     """
 
 def crear_prompt_ideas(data):
     return f"""
-    SOLICITUD ACTUAL: {data.get('solicitud', '')}
-    IDEAS A EVITAR: {data.get('no-queremos', '')}
+    CONTEXTO DE LA SOLICITUD:
+    - Brief: {data.get('solicitud', '')}
+    - Objetivo principal: {data.get('objetivo', 'No especificado')}
+    - Target: {data.get('target', 'No especificado')}
+    - Ideas a evitar: {data.get('no-queremos', '')}
+    - Restricciones: {data.get('restricciones', 'No especificado')}
     
-    Genera 3 ideas COMPLETAMENTE DISRUPTIVAS que rompan todos los paradigmas del mercado:
+    Basado en este contexto específico, genera 3 ideas COMPLETAMENTE DISRUPTIVAS:
 
     IDEA 1:
     - Concepto Principal:
-    - Por qué revoluciona el mercado:
-    - Elementos nunca antes vistos:
-    - Implementación innovadora:
-    - Impacto esperado:
+    - Alineación con objetivo:
+    - Por qué es disruptiva:
+    - Relevancia para target:
+    - Elementos innovadores:
+    - Implementación:
     - Medición de resultados:
     
     [Repetir mismo formato detallado para ideas 2 y 3]
 
-    IMPORTANTE: Cada idea debe ser RADICALMENTE DIFERENTE a las otras y a cualquier cosa existente en el mercado.
+    IMPORTANTE: 
+    - Cada idea debe ser ÚNICA pero RELEVANTE para el brief
+    - Asegúrate que cada idea responda al objetivo principal
+    - Considera las restricciones mencionadas
+    - Evita específicamente las ideas mencionadas como no deseadas
     """
 
 if __name__ == '__main__':
