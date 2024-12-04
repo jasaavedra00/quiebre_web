@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
+<<<<<<< HEAD
 try:
     from openai import OpenAI
     print("OpenAI importado correctamente")
@@ -10,20 +11,33 @@ except ImportError as e:
     print("Intentando instalar openai...")
     subprocess.check_call(["pip", "install", "openai==1.3.0"])
     from openai import OpenAI
+=======
+import openai
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
 import os
 import json
 import logging
 from pathlib import Path
+<<<<<<< HEAD
 
 # Configurar logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+=======
+import pkg_resources
+
+# Verificar versión de openai
+openai_version = pkg_resources.get_distribution('openai').version
+if openai_version != '0.28.0':
+    raise ImportError(f"Se requiere openai==0.28.0, pero se encontró {openai_version}")
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
 
 # Configuración inicial
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+<<<<<<< HEAD
 # Configurar OpenAI con el nuevo cliente
 try:
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
@@ -31,6 +45,14 @@ try:
 except Exception as e:
     logger.error(f"Error initializing OpenAI client: {e}")
     raise
+=======
+# Configurar OpenAI
+openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Configurar logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
 
 # Asegurar que existan los directorios necesarios
 DATA_DIR = Path('data')
@@ -50,7 +72,10 @@ def upload_knowledge():
     if request.method == 'POST':
         try:
             area = request.form.get('area')
+<<<<<<< HEAD
             logger.debug(f"Procesando upload para área: {area}")
+=======
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
             
             # Crear estructura de datos
             brief_data = {
@@ -83,7 +108,10 @@ def upload_knowledge():
             with open(brief_file, 'w', encoding='utf-8') as f:
                 json.dump(brief_data, f, ensure_ascii=False, indent=2)
 
+<<<<<<< HEAD
             logger.debug(f"Datos guardados exitosamente para {area}")
+=======
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
             return jsonify({"status": "success", "message": f"Datos guardados para {area}"})
 
         except Exception as e:
@@ -111,6 +139,7 @@ def generar():
         else:
             return jsonify({'error': 'Área no válida'})
 
+<<<<<<< HEAD
         logger.debug(f"Prompt generado: {prompt}")
 
         try:
@@ -241,6 +270,30 @@ def crear_prompt_ideas(data):
     
     [Continuar con mismo formato para ideas 2 y 3]
     """
+=======
+        # Generar respuesta con OpenAI
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": """Eres un experto en creatividad disruptiva.
+                Tu objetivo es generar ideas radicalmente diferentes y revolucionarias.
+                NUNCA repitas conceptos ni uses aproximaciones similares.
+                Cada idea debe ser completamente única y alejada de lo convencional."""},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=2000,
+            temperature=0.9
+        )
+
+        respuesta = response.choices[0].message['content']
+        return jsonify({area: respuesta})
+
+    except Exception as e:
+        logger.error(f"Error: {str(e)}")
+        return jsonify({'error': str(e)})
+
+# ... [El resto de las funciones crear_prompt_* se mantienen igual] ...
+>>>>>>> d10dfff7df3e008f88ea40379c29083c653b44d5
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))

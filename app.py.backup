@@ -1,0 +1,155 @@
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from dotenv import load_dotenv
+import os
+from flask_cors import CORS
+import logging
+from openai import OpenAI
+
+# Configuración inicial
+app = Flask(__name__)
+CORS(app)
+load_dotenv()
+
+# Configuración de logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Inicializar OpenAI
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/generar', methods=['POST'])
+def generar_quiebre():
+    try:
+        datos = request.get_json()
+        area_solicitada = datos.get('area_solicitada')
+        logger.debug(f"Generando ideas para área: {area_solicitada}")
+        
+        # Configuración de áreas
+        areas_config = {
+            'btl': {
+                'titulo': 'BTL (Below The Line)',
+                'role': "Eres un experto en marketing BTL altamente creativo y disruptivo. Tu especialidad es crear experiencias únicas que rompan los esquemas tradicionales del marketing experiencial.",
+                'campos': {
+                    'conceptos': 'CONCEPTOS DISRUPTIVOS',
+                    'locaciones': 'LOCACIONES INNOVADORAS',
+                    'antesDespues': 'ANTES Y DESPUÉS IMPACTANTE',
+                    'momentoPeak': 'MOMENTO PEAK MEMORABLE',
+                    'activaciones': 'ACTIVACIONES ÚNICAS',
+                    'puestaEscena': 'PUESTA EN ESCENA INNOVADORA',
+                    'formaInvitar': 'FORMA DE INVITAR ORIGINAL'
+                }
+            },
+            'trade': {
+                'titulo': 'TRADE Marketing',
+                'role': "Eres un experto en trade marketing innovador. Tu especialidad es transformar el punto de venta en experiencias memorables que revolucionen la forma de exhibir y vender productos.",
+                'campos': {
+                    'materialPOP': 'MATERIAL POP INNOVADOR',
+                    'dinamicas': 'DINÁMICAS DISRUPTIVAS',
+                    'materialidad': 'MATERIALIDAD ÚNICA'
+                }
+            },
+            'digital': {
+                'titulo': 'Marketing DIGITAL',
+                'role': "Eres un experto en marketing digital disruptivo. Tu especialidad es crear contenido viral y tendencias que revolucionen las redes sociales y generen alto impacto.",
+                'campos': {
+                    'contenido': 'IDEAS DE CONTENIDO INNOVADORAS',
+                    'conceptos': 'CONCEPTOS DISRUPTIVOS DIGITALES'
+                }
+            },
+            'ideas': {
+                'titulo': 'IDEAS Creativas',
+                'role': "Eres un experto en generación de ideas creativas y disruptivas. Tu especialidad es crear conceptos únicos y diferentes, evitando específicamente las ideas que no se desean.",
+                'campos': {
+                    'ideasNoDeseadas': 'IDEAS QUE NO QUEREMOS'
+                }
+            }
+        }
+
+        if area_solicitada in areas_config:
+            config = areas_config[area_solicitada]
+            area_datos = datos[area_solicitada]
+            solicitud = area_datos.get('solicitud', '')
+            
+            # Prompt especial para el área de IDEAS
+            if area_solicitada == 'ideas':
+                ideas_no_deseadas = area_datos.get('ideasNoDeseadas', '')
+                prompt = f"""
+                SOLICITUD DEL CLIENTE:
+                {solicitud}
+
+                IDEAS QUE NO QUEREMOS:
+                {ideas_no_deseadas}
+
+                Como experto creativo, genera 5 IDEAS COMPLETAMENTE DISRUPTIVAS Y DIFERENTES que:
+                1. NO se parezcan a las ideas que NO queremos
+                2. Sean innovadoras y únicas
+                3. Generen un verdadero QUIEBRE creativo
+                4. Sean viables y prácticas de implementar
+                5. Incluyan detalles específicos de implementación
+
+                FORMATO DE RESPUESTA:
+                IDEA 1:
+                [Descripción detallada]
+
+                IDEA 2:
+                [Descripción detallada]
+
+                ... y así sucesivamente hasta IDEA 5
+                """
+            else:
+                # Prompt normal para otras áreas
+                prompt = f"""
+                SOLICITUD DEL CLIENTE:
+                {solicitud}
+
+                Como experto en {config['titulo']}, genera UNA idea DISRUPTIVA y DETALLADA para cada uno de los siguientes puntos.
+                Las ideas deben ser COMPLETAMENTE DIFERENTES a las proporcionadas y generar un verdadero QUIEBRE creativo.
+
+                GENERA UNA IDEA DISRUPTIVA PARA CADA PUNTO:
+                """
+
+                for campo_key, campo_nombre in config['campos'].items():
+                    idea_base = area_datos.get(campo_key, '')
+                    prompt += f"""
+                    {campo_nombre}:
+                    → Idea base: {idea_base}
+                    → GENERA UNA ÚNICA IDEA DISRUPTIVA Y DETALLADA:
+
+                    """
+
+                prompt += """
+                IMPORTANTE:
+                - Genera UNA SOLA idea por punto
+                - Cada idea debe ser específica y detallada
+                - Las ideas deben ser radicalmente diferentes a las proporcionadas
+                - Incluye aspectos prácticos de implementación
+                - Asegura que cada idea sea viable pero innovadora
+                """
+
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": config['role']},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.9,
+                max_tokens=2000
+            )
+
+            return jsonify({area_solicitada: response.choices[0].message.content})
+
+        return jsonify({"error": "Área no válida"}), 400
+
+    except Exception as e:
+        logger.error(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)  # Quitamos host='0.0.0.0' para mayor seguridad
