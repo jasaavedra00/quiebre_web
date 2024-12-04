@@ -134,87 +134,156 @@ def generar():
 
 def crear_prompt_btl(data):
     return f"""
-    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+    Genera ideas COMPLETAMENTE DISRUPTIVAS y REVOLUCIONARIAS para cada uno de estos elementos BTL.
+    IMPORTANTE: Cada idea debe ser RADICALMENTE DIFERENTE a lo convencional.
 
-    1. LOCACIONES:
+    1. CONCEPTOS CREATIVOS:
+    Contexto actual: {data.get('concepto', '')}
+    Proponer 3 conceptos totalmente disruptivos:
+    CONCEPTO 1:
+    - Idea central:
+    - Por qué rompe paradigmas:
+    - Elementos innovadores:
+    [Repetir formato para conceptos 2 y 3]
+
+    2. LOCACIONES ÚNICAS:
     Contexto actual: {data.get('locaciones', '')}
-    Proponer 3 locaciones disruptivas:
+    Proponer 3 espacios no convencionales:
     LOCACIÓN 1:
-    - Descripción:
-    - Por qué es disruptiva:
-    - Elementos innovadores:
-    
-    [Continuar con mismo formato para locaciones 2 y 3]
+    - Espacio propuesto:
+    - Por qué es disruptivo:
+    - Ventajas diferenciales:
+    [Repetir formato para locaciones 2 y 3]
 
-    2. ACTIVACIONES:
+    3. ANTES Y DESPUÉS:
+    Proponer 3 formas innovadoras de transformación:
+    TRANSFORMACIÓN 1:
+    - Descripción del cambio:
+    - Impacto visual:
+    - Factor sorpresa:
+    [Repetir formato para transformaciones 2 y 3]
+
+    4. MOMENTO PEAK:
+    Proponer 3 momentos cumbre únicos:
+    MOMENTO 1:
+    - Descripción del momento:
+    - Factor wow:
+    - Elementos memorables:
+    [Repetir formato para momentos 2 y 3]
+
+    5. ACTIVACIONES:
     Contexto actual: {data.get('activaciones', '')}
-    Proponer 3 activaciones disruptivas:
+    Proponer 3 activaciones revolucionarias:
     ACTIVACIÓN 1:
+    - Mecánica:
+    - Interacción innovadora:
+    - Elemento viral:
+    [Repetir formato para activaciones 2 y 3]
+
+    6. PUESTA EN ESCENA:
+    Proponer 3 montajes disruptivos:
+    MONTAJE 1:
+    - Descripción escénica:
+    - Elementos únicos:
+    - Impacto sensorial:
+    [Repetir formato para montajes 2 y 3]
+
+    7. PANTALLAS Y TECNOLOGÍA:
+    Proponer 3 usos no convencionales:
+    PROPUESTA 1:
+    - Tecnología propuesta:
+    - Aplicación innovadora:
+    - Diferenciador clave:
+    [Repetir formato para propuestas 2 y 3]
+
+    8. FORMA DE INVITAR:
+    Proponer 3 métodos disruptivos de convocatoria:
+    MÉTODO 1:
     - Descripción:
-    - Elementos innovadores:
-    - Interacción con el público:
-    
-    [Continuar con mismo formato para activaciones 2 y 3]
+    - Factor sorpresa:
+    - Elemento memorable:
+    [Repetir formato para métodos 2 y 3]
     """
 
 def crear_prompt_trade(data):
     return f"""
-    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+    Genera ideas COMPLETAMENTE DISRUPTIVAS para cada elemento de Trade Marketing.
+    IMPORTANTE: Cada propuesta debe ROMPER con lo tradicional del retail.
 
-    1. MATERIAL POP:
-    Contexto actual: {data.get('material-pop', '')}
-    Generar 3 propuestas disruptivas:
-    PROPUESTA 1:
-    - Descripción:
-    - Por qué es disruptiva:
+    1. EXHIBICIÓN:
+    Contexto actual: {data.get('exhibicion', '')}
+    Proponer 3 formas revolucionarias de exhibir:
+    EXHIBICIÓN 1:
+    - Concepto disruptivo:
     - Elementos innovadores:
-    
-    [Continuar con mismo formato para propuestas 2 y 3]
+    - Impacto en el shopper:
+    [Repetir formato para exhibiciones 2 y 3]
 
-    2. DINÁMICAS:
-    Contexto actual: {data.get('dinamicas', '')}
-    Proponer 3 dinámicas disruptivas:
-    DINÁMICA 1:
+    2. MATERIAL POP:
+    Contexto actual: {data.get('material-pop', '')}
+    Proponer 3 materiales no convencionales:
+    MATERIAL 1:
     - Descripción:
-    - Mecánica:
-    - Factor diferenciador:
-    
-    [Continuar con mismo formato para dinámicas 2 y 3]
+    - Innovación propuesta:
+    - Ventaja diferencial:
+    [Repetir formato para materiales 2 y 3]
 
-    3. MATERIALIDAD:
-    Contexto actual: {data.get('materialidad', '')}
-    Proponer 3 opciones innovadoras:
-    OPCIÓN 1:
-    - Material propuesto:
-    - Ventajas únicas:
-    - Aplicaciones posibles:
-    
-    [Continuar con mismo formato para opciones 2 y 3]
+    3. DINÁMICAS DE COMPRA:
+    Contexto actual: {data.get('dinamicas', '')}
+    Proponer 3 mecánicas revolucionarias:
+    DINÁMICA 1:
+    - Mecánica propuesta:
+    - Factor innovador:
+    - Impacto en ventas:
+    [Repetir formato para dinámicas 2 y 3]
+
+    4. EXPERIENCIA EN PUNTO DE VENTA:
+    Proponer 3 experiencias únicas:
+    EXPERIENCIA 1:
+    - Descripción:
+    - Elementos sensoriales:
+    - Factor memorable:
+    [Repetir formato para experiencias 2 y 3]
     """
 
 def crear_prompt_digital(data):
     return f"""
-    Por favor, genera ideas DISRUPTIVAS y DIFERENTES para CADA UNO de los siguientes aspectos:
+    Genera ideas COMPLETAMENTE DISRUPTIVAS para cada elemento Digital.
+    IMPORTANTE: Cada propuesta debe REVOLUCIONAR la forma de interacción digital.
 
-    1. CONTENIDO:
-    Contexto actual: {data.get('contenido', '')}
-    Generar 3 propuestas de contenido:
-    CONTENIDO 1:
-    - Descripción:
-    - Formato:
-    - Factor viral:
-    
-    [Continuar con mismo formato para contenidos 2 y 3]
-
-    2. CONCEPTOS:
-    Contexto actual: {data.get('conceptos', '')}
-    Proponer 3 conceptos disruptivos:
+    1. CONCEPTO DIGITAL:
+    Contexto actual: {data.get('concepto', '')}
+    Proponer 3 conceptos revolucionarios:
     CONCEPTO 1:
+    - Idea central:
+    - Innovación digital:
+    - Factor viral:
+    [Repetir formato para conceptos 2 y 3]
+
+    2. CONTENIDO:
+    Contexto actual: {data.get('contenido', '')}
+    Proponer 3 formatos disruptivos:
+    CONTENIDO 1:
+    - Formato propuesto:
+    - Elemento innovador:
+    - Potencial de engagement:
+    [Repetir formato para contenidos 2 y 3]
+
+    3. MECÁNICA DE INTERACCIÓN:
+    Proponer 3 formas únicas de interacción:
+    MECÁNICA 1:
     - Descripción:
-    - Elementos innovadores:
-    - Viralización esperada:
-    
-    [Continuar con mismo formato para conceptos 2 y 3]
+    - Innovación tecnológica:
+    - Factor diferencial:
+    [Repetir formato para mecánicas 2 y 3]
+
+    4. VIRALIZACIÓN:
+    Proponer 3 estrategias no convencionales:
+    ESTRATEGIA 1:
+    - Método propuesto:
+    - Factor viral:
+    - Medición de impacto:
+    [Repetir formato para estrategias 2 y 3]
     """
 
 def crear_prompt_ideas(data):
@@ -222,16 +291,19 @@ def crear_prompt_ideas(data):
     SOLICITUD ACTUAL: {data.get('solicitud', '')}
     IDEAS A EVITAR: {data.get('no-queremos', '')}
     
-    Por favor, genera 3 ideas COMPLETAMENTE DISRUPTIVAS:
+    Genera 3 ideas COMPLETAMENTE DISRUPTIVAS que rompan todos los paradigmas del mercado:
 
     IDEA 1:
     - Concepto Principal:
-    - Por qué es disruptiva:
-    - Elementos innovadores:
-    - Implementación:
-    - Diferenciadores clave:
+    - Por qué revoluciona el mercado:
+    - Elementos nunca antes vistos:
+    - Implementación innovadora:
+    - Impacto esperado:
+    - Medición de resultados:
     
-    [Continuar con mismo formato para ideas 2 y 3]
+    [Repetir mismo formato detallado para ideas 2 y 3]
+
+    IMPORTANTE: Cada idea debe ser RADICALMENTE DIFERENTE a las otras y a cualquier cosa existente en el mercado.
     """
 
 if __name__ == '__main__':
