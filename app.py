@@ -99,24 +99,30 @@ def generar():
         else:
             return jsonify({'error': 'Área no válida'})
 
-        logger.debug(f"Prompt generado: {prompt}")
-
         try:
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": """Eres un experto en creatividad disruptiva con amplia experiencia en marketing y publicidad.
-                    Tu objetivo es generar ideas que sean:
-                    1. DISRUPTIVAS Y REVOLUCIONARIAS
-                    2. ESPECÍFICAMENTE ADAPTADAS al contexto y solicitud del cliente
-                    3. RELEVANTES para el target y objetivos planteados
-                    4. FACTIBLES de implementar dentro de las restricciones dadas
+                    {"role": "system", "content": """Eres un experto en creatividad RADICAL y DISRUPTIVA.
                     
-                    IMPORTANTE:
-                    - Analiza primero el contexto/solicitud
-                    - Asegúrate que cada idea responda directamente a los objetivos
-                    - Las ideas deben ser únicas pero relevantes para la marca/producto
-                    - Considera restricciones y limitaciones mencionadas"""},
+                    TU OBJETIVO ES:
+                    1. ANALIZAR el contexto específico del cliente/marca
+                    2. IDENTIFICAR las ideas básicas/convencionales proporcionadas para EVITARLAS
+                    3. Generar ideas COMPLETAMENTE OPUESTAS y REVOLUCIONARIAS
+                    
+                    REGLAS IMPORTANTES:
+                    - NUNCA sugieras ideas similares a las proporcionadas
+                    - ROMPE todos los paradigmas de la categoría
+                    - EVITA cualquier aproximación convencional
+                    - REVOLUCIONA la forma de pensar cada elemento
+                    - GENERA IDEAS QUE NADIE HAYA IMPLEMENTADO ANTES
+                    
+                    PROCESO:
+                    1. Primero analiza el brief y contexto
+                    2. Identifica qué ideas son "básicas" o "esperadas" para EVITARLAS
+                    3. Genera ideas que sean OPUESTAS o RADICALMENTE DIFERENTES
+                    4. Asegúrate que cada idea sea IMPLEMENTABLE pero REVOLUCIONARIA
+                    5. VERIFICA que ninguna idea se parezca a las proporcionadas"""},
                     {"role": "user", "content": prompt}
                 ],
                 max_tokens=2000,
@@ -137,174 +143,198 @@ def generar():
 
 def crear_prompt_btl(data):
     return f"""
-    CONTEXTO DE LA SOLICITUD:
-    - Marca/Cliente: {data.get('marca', 'No especificado')}
-    - Objetivo: {data.get('objetivo', 'No especificado')}
-    - Target: {data.get('target', 'No especificado')}
-    - Restricciones/Consideraciones: {data.get('restricciones', 'No especificado')}
-    - Presupuesto: {data.get('presupuesto', 'No especificado')}
+    ANÁLISIS DEL CONTEXTO:
+    Solicitud: {data.get('solicitud', 'No especificado')}
     
-    Basado en este contexto específico, genera ideas DISRUPTIVAS para cada elemento:
+    IDEAS CONVENCIONALES A EVITAR:
+    - Concepto actual: {data.get('concepto', 'No especificado')}
+    - Locaciones actuales: {data.get('locaciones', 'No especificado')}
+    - Activaciones actuales: {data.get('activaciones', 'No especificado')}
+    - Puesta en escena actual: {data.get('puesta_escena', 'No especificado')}
+    - Forma de invitar actual: {data.get('forma_invitar', 'No especificado')}
+
+    GENERA IDEAS RADICALMENTE DIFERENTES PARA:
 
     1. CONCEPTOS CREATIVOS:
-    Contexto actual: {data.get('concepto', '')}
-    Proponer 3 conceptos que revolucionen la categoría Y se alineen con el objetivo:
+    EVITAR conceptos como: {data.get('concepto', '')}
+    Proponer 3 conceptos REVOLUCIONARIOS:
     CONCEPTO 1:
-    - Idea central:
-    - Alineación con objetivo:
-    - Elementos disruptivos:
-    - Relevancia para el target:
+    - Idea central (DEBE SER RADICAL):
+    - Por qué rompe TODOS los paradigmas:
+    - Elementos NUNCA ANTES VISTOS:
+    - Impacto REVOLUCIONARIO esperado:
     [Repetir formato para conceptos 2 y 3]
 
     2. LOCACIONES ÚNICAS:
-    Contexto actual: {data.get('locaciones', '')}
-    Proponer 3 espacios que sorprendan al target específico:
+    EVITAR locaciones como: {data.get('locaciones', '')}
+    Proponer 3 espacios IMPENSABLES:
     LOCACIÓN 1:
-    - Espacio propuesto:
-    - Por qué funciona para este target:
-    - Elementos disruptivos:
-    - Alineación con marca:
+    - Espacio REVOLUCIONARIO:
+    - Por qué NADIE lo ha hecho antes:
+    - Elementos DISRUPTIVOS:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para locaciones 2 y 3]
 
     3. ACTIVACIONES:
-    Contexto actual: {data.get('activaciones', '')}
-    Proponer 3 activaciones que cumplan el objetivo:
+    EVITAR activaciones como: {data.get('activaciones', '')}
+    Proponer 3 activaciones NUNCA VISTAS:
     ACTIVACIÓN 1:
-    - Mecánica:
-    - Relevancia para objetivo:
-    - Elemento disruptivo:
-    - Conexión con target:
+    - Mecánica REVOLUCIONARIA:
+    - Elementos IMPENSABLES:
+    - Factor RADICAL:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para activaciones 2 y 3]
 
     4. PUESTA EN ESCENA:
-    Proponer 3 montajes alineados con la marca:
+    EVITAR elementos como: {data.get('puesta_escena', '')}
+    Proponer 3 montajes REVOLUCIONARIOS:
     MONTAJE 1:
-    - Descripción:
-    - Alineación con marca:
-    - Elemento sorpresa:
-    - Impacto esperado:
+    - Concepto RADICAL:
+    - Elementos NUNCA VISTOS:
+    - Factor DISRUPTIVO:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para montajes 2 y 3]
 
-    5. TECNOLOGÍA Y EXPERIENCIA:
-    Proponer 3 usos innovadores considerando el target:
-    PROPUESTA 1:
-    - Tecnología:
-    - Relevancia para target:
-    - Factor innovador:
-    - Medición de resultados:
-    [Repetir formato para propuestas 2 y 3]
+    5. FORMA DE INVITAR:
+    EVITAR métodos como: {data.get('forma_invitar', '')}
+    Proponer 3 métodos REVOLUCIONARIOS:
+    MÉTODO 1:
+    - Mecánica RADICAL:
+    - Elementos DISRUPTIVOS:
+    - Factor INNOVADOR:
+    - Impacto TRANSFORMADOR:
+    [Repetir formato para métodos 2 y 3]
+
+    IMPORTANTE:
+    - Cada idea debe ser RADICALMENTE DIFERENTE a lo proporcionado
+    - EVITA cualquier similitud con las ideas convencionales mencionadas
+    - Asegúrate que cada propuesta sea REVOLUCIONARIA pero IMPLEMENTABLE
+    - ROMPE todos los paradigmas de la categoría
     """
 
 def crear_prompt_trade(data):
     return f"""
-    CONTEXTO DE LA SOLICITUD:
-    - Marca/Cliente: {data.get('marca', 'No especificado')}
-    - Objetivo comercial: {data.get('objetivo', 'No especificado')}
-    - Canal: {data.get('canal', 'No especificado')}
-    - Restricciones: {data.get('restricciones', 'No especificado')}
-    - KPIs esperados: {data.get('kpis', 'No especificado')}
+    ANÁLISIS DEL CONTEXTO:
+    Solicitud: {data.get('solicitud', 'No especificado')}
+    
+    IDEAS CONVENCIONALES A EVITAR:
+    - Material POP actual: {data.get('material-pop', 'No especificado')}
+    - Dinámicas actuales: {data.get('dinamicas', 'No especificado')}
+    - Exhibición actual: {data.get('exhibicion', 'No especificado')}
 
-    Basado en este contexto específico, genera ideas DISRUPTIVAS para:
+    GENERA IDEAS RADICALMENTE DIFERENTES PARA:
 
     1. EXHIBICIÓN:
-    Contexto actual: {data.get('exhibicion', '')}
-    Proponer 3 formas revolucionarias que impulsen ventas:
+    EVITAR exhibiciones como: {data.get('exhibicion', '')}
+    Proponer 3 formas REVOLUCIONARIAS de exhibir:
     EXHIBICIÓN 1:
-    - Concepto:
-    - Alineación con objetivo comercial:
-    - Elemento disruptivo:
-    - ROI esperado:
+    - Concepto RADICAL:
+    - Elementos NUNCA VISTOS:
+    - Factor DISRUPTIVO:
+    - Impacto TRANSFORMADOR en ventas:
     [Repetir formato para exhibiciones 2 y 3]
 
     2. MATERIAL POP:
-    Contexto actual: {data.get('material-pop', '')}
-    Proponer 3 materiales que revolucionen el punto de venta:
+    EVITAR materiales como: {data.get('material-pop', '')}
+    Proponer 3 materiales REVOLUCIONARIOS:
     MATERIAL 1:
-    - Descripción:
-    - Impacto en ventas:
-    - Innovación:
-    - Medición de efectividad:
+    - Concepto RADICAL:
+    - Elementos DISRUPTIVOS:
+    - Innovación NUNCA VISTA:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para materiales 2 y 3]
 
     3. DINÁMICAS COMERCIALES:
-    Contexto actual: {data.get('dinamicas', '')}
-    Proponer 3 mecánicas que aumenten conversión:
+    EVITAR dinámicas como: {data.get('dinamicas', '')}
+    Proponer 3 mecánicas REVOLUCIONARIAS:
     DINÁMICA 1:
-    - Mecánica:
-    - Alineación con KPIs:
-    - Factor innovador:
-    - Resultados esperados:
+    - Mecánica RADICAL:
+    - Elementos DISRUPTIVOS:
+    - Factor INNOVADOR:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para dinámicas 2 y 3]
+
+    IMPORTANTE:
+    - Cada idea debe ser RADICALMENTE DIFERENTE a lo proporcionado
+    - EVITA cualquier similitud con las ideas convencionales mencionadas
+    - Asegúrate que cada propuesta sea REVOLUCIONARIA pero IMPLEMENTABLE
+    - ROMPE todos los paradigmas del retail
     """
 
 def crear_prompt_digital(data):
     return f"""
-    CONTEXTO DE LA SOLICITUD:
-    - Marca/Cliente: {data.get('marca', 'No especificado')}
-    - Objetivo digital: {data.get('objetivo', 'No especificado')}
-    - Plataformas: {data.get('plataformas', 'No especificado')}
-    - Target digital: {data.get('target', 'No especificado')}
-    - KPIs digitales: {data.get('kpis', 'No especificado')}
+    ANÁLISIS DEL CONTEXTO:
+    Solicitud: {data.get('solicitud', 'No especificado')}
+    
+    IDEAS CONVENCIONALES A EVITAR:
+    - Contenido actual: {data.get('contenido', 'No especificado')}
+    - Conceptos actuales: {data.get('conceptos', 'No especificado')}
+    - Estrategia actual: {data.get('estrategia', 'No especificado')}
 
-    Basado en este contexto específico, genera ideas DISRUPTIVAS para:
+    GENERA IDEAS RADICALMENTE DIFERENTES PARA:
 
     1. ESTRATEGIA DIGITAL:
-    Contexto actual: {data.get('estrategia', '')}
-    Proponer 3 enfoques revolucionarios:
+    EVITAR estrategias como: {data.get('estrategia', '')}
+    Proponer 3 enfoques REVOLUCIONARIOS:
     ESTRATEGIA 1:
-    - Concepto:
-    - Alineación con objetivo:
-    - Innovación digital:
-    - KPIs impactados:
+    - Concepto RADICAL:
+    - Elementos NUNCA VISTOS:
+    - Factor DISRUPTIVO:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para estrategias 2 y 3]
 
     2. CONTENIDO:
-    Contexto actual: {data.get('contenido', '')}
-    Proponer 3 formatos que revolucionen la categoría:
+    EVITAR contenidos como: {data.get('contenido', '')}
+    Proponer 3 formatos REVOLUCIONARIOS:
     CONTENIDO 1:
-    - Formato:
-    - Relevancia para target:
-    - Factor viral:
-    - Medición de impacto:
+    - Formato RADICAL:
+    - Elementos DISRUPTIVOS:
+    - Factor INNOVADOR:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para contenidos 2 y 3]
 
-    3. INTERACCIÓN:
-    Proponer 3 mecánicas innovadoras:
+    3. MECÁNICAS DE INTERACCIÓN:
+    EVITAR mecánicas como: {data.get('mecanicas', '')}
+    Proponer 3 interacciones REVOLUCIONARIAS:
     MECÁNICA 1:
-    - Descripción:
-    - Alineación con objetivo:
-    - Elemento disruptivo:
-    - Engagement esperado:
+    - Concepto RADICAL:
+    - Elementos NUNCA VISTOS:
+    - Factor DISRUPTIVO:
+    - Impacto TRANSFORMADOR:
     [Repetir formato para mecánicas 2 y 3]
+
+    IMPORTANTE:
+    - Cada idea debe ser RADICALMENTE DIFERENTE a lo proporcionado
+    - EVITA cualquier similitud con las ideas convencionales mencionadas
+    - Asegúrate que cada propuesta sea REVOLUCIONARIA pero IMPLEMENTABLE
+    - ROMPE todos los paradigmas digitales
     """
 
 def crear_prompt_ideas(data):
     return f"""
-    CONTEXTO DE LA SOLICITUD:
-    - Brief: {data.get('solicitud', '')}
-    - Objetivo principal: {data.get('objetivo', 'No especificado')}
-    - Target: {data.get('target', 'No especificado')}
-    - Ideas a evitar: {data.get('no-queremos', '')}
-    - Restricciones: {data.get('restricciones', 'No especificado')}
+    ANÁLISIS DEL CONTEXTO:
+    Solicitud: {data.get('solicitud', 'No especificado')}
     
-    Basado en este contexto específico, genera 3 ideas COMPLETAMENTE DISRUPTIVAS:
+    IDEAS A EVITAR EXPLÍCITAMENTE:
+    {data.get('no-queremos', 'No especificado')}
+
+    GENERA 3 IDEAS COMPLETAMENTE REVOLUCIONARIAS:
 
     IDEA 1:
-    - Concepto Principal:
-    - Alineación con objetivo:
-    - Por qué es disruptiva:
-    - Relevancia para target:
-    - Elementos innovadores:
-    - Implementación:
-    - Medición de resultados:
+    - Concepto RADICAL:
+    - Por qué ROMPE TODOS los paradigmas:
+    - Elementos NUNCA ANTES VISTOS:
+    - Implementación REVOLUCIONARIA:
+    - Impacto TRANSFORMADOR:
+    - Medición de RESULTADOS DISRUPTIVOS:
     
     [Repetir mismo formato detallado para ideas 2 y 3]
 
-    IMPORTANTE: 
-    - Cada idea debe ser ÚNICA pero RELEVANTE para el brief
-    - Asegúrate que cada idea responda al objetivo principal
-    - Considera las restricciones mencionadas
-    - Evita específicamente las ideas mencionadas como no deseadas
+    IMPORTANTE:
+    - Cada idea debe ser RADICALMENTE DIFERENTE a lo proporcionado
+    - EVITA cualquier similitud con las ideas convencionales mencionadas
+    - ROMPE completamente con lo establecido en la categoría
+    - Asegúrate que cada propuesta sea REVOLUCIONARIA pero IMPLEMENTABLE
     """
 
 if __name__ == '__main__':
