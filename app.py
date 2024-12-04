@@ -1,15 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
-try:
-    from openai import OpenAI
-    print("OpenAI importado correctamente")
-except ImportError as e:
-    print(f"Error importando OpenAI: {e}")
-    import subprocess
-    print("Intentando instalar openai...")
-    subprocess.check_call(["pip", "install", "openai==1.3.0"])
-    from openai import OpenAI
+import openai
 import os
 import json
 import logging
@@ -24,12 +16,12 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Configurar OpenAI con el nuevo cliente
+# Configurar OpenAI
 try:
-    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-    logger.debug("OpenAI client initialized successfully")
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    logger.debug("OpenAI configurado correctamente")
 except Exception as e:
-    logger.error(f"Error initializing OpenAI client: {e}")
+    logger.error(f"Error configurando OpenAI: {e}")
     raise
 
 # Asegurar que existan los directorios necesarios
@@ -114,8 +106,8 @@ def generar():
         logger.debug(f"Prompt generado: {prompt}")
 
         try:
-            # Generar respuesta con OpenAI (nueva sintaxis)
-            response = client.chat.completions.create(
+            # Generar respuesta con OpenAI
+            response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": """Eres un experto en creatividad disruptiva.
@@ -129,7 +121,7 @@ def generar():
             )
             logger.debug("Respuesta de OpenAI recibida")
 
-            respuesta = response.choices[0].message.content
+            respuesta = response.choices[0].message['content']
             return jsonify({area: respuesta})
 
         except Exception as e:
